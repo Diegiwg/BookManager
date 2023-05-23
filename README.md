@@ -28,7 +28,7 @@ O Sistema de Gerenciamento de Biblioteca é uma aplicação Java que permite aos
 3. **Estrutura do Projeto:**
 
    - No Eclipse, crie uma estrutura de pacotes para organizar as classes do projeto. Por exemplo:
-   
+
      ```
      com.example.biblioteca
      ├── model
@@ -38,7 +38,7 @@ O Sistema de Gerenciamento de Biblioteca é uma aplicação Java que permite aos
      │   └── LibraryRepository.java
      └── Main.java
      ```
-     
+
    - Crie as classes `Book`, `Library`, `LibraryRepository` e `Main` dentro dos respectivos pacotes.
 
 4. **Implementação do Banco de Dados:**
