@@ -5,8 +5,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 import controller.DatabaseController;
 import model.entity.UserEntity;
@@ -15,32 +13,27 @@ public class UserDAO {
 	private UserDAO() {
 	}
 
-	private static UserEntity userEntity(ResultSet set) {
-		try {
-			return new UserEntity(set.getInt("id"), set.getString("name"), set.getString("email"),
-					set.getString("password"));
+	public static String[][] listAllUsers() {
+		try (Statement statement = DatabaseController.connection().createStatement()) {
+			ResultSet result = statement.executeQuery("SELECT * FROM users;");
+
+			ArrayList<String[]> users = new ArrayList<>();
+			while (result.next()) {
+				String[] user = { String.valueOf(result.getInt("id")), result.getString("name"),
+						result.getString("email"), result.getString("password") };
+				users.add(user);
+			}
+
+			String[][] m_users = new String[users.size()][];
+			for (int i = 0; i < users.size(); i++) {
+				m_users[i] = users.get(i);
+			}
+			return m_users;
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 
 		return null;
-	}
-
-	public static List<UserEntity> listAllUsers() {
-		try (Statement statement = DatabaseController.connection().createStatement()) {
-			ResultSet result = statement.executeQuery("SELECT * FROM users;");
-
-			List<UserEntity> users = new ArrayList<>();
-			while (result.next()) {
-				UserEntity user = userEntity(result);
-				users.add(new UserEntity(user.getId(), user.getName(), user.getEmail()));
-			}
-			return users;
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-
-		return Collections.emptyList();
 	}
 
 	public static void addUser(UserEntity user) {

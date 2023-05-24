@@ -1,19 +1,17 @@
 package view.components;
 
-import java.util.List;
-
 public class Table {
 	private String[] headers;
-	private List<List<String>> rows;
+	private String[][] rows;
 
-	public Table(String[] headers, List<List<String>> rows) {
+	public Table(String[] headers, String[][] rows) {
 		this.headers = headers;
 		this.rows = rows;
 	}
 
 	public void show() {
 		System.out.println(String.join("\t", headers));
-		for (List<String> row : rows) {
+		for (String[] row : rows) {
 			System.out.println(String.join("\t", row));
 		}
 	}
@@ -28,7 +26,7 @@ public class Table {
 		}
 		System.out.println();
 
-		for (List<String> row : rows) {
+		for (String[] row : rows) {
 			for (String cell : row) {
 				cell = cell.trim();
 
