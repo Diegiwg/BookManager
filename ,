@@ -1,0 +1,78 @@
+from enum import Enum
+from dataclasses import dataclass
+from typing import Any, TypedDict
+
+# Forms Component
+
+
+class InputType(Enum):
+    TEXT = "t"
+    NUMBER = "n"
+    BOOLEAN = "b"
+
+
+@dataclass
+class Input:
+    label: str
+    type: InputType
+    value: Any
+    answer: Any
+
+
+class FormConfig(TypedDict):
+    title: str
+    inputs: list[Input]
+
+
+def check_correct_type(value: Any, type: InputType) -> Any:
+    try:
+        if type == InputType.TEXT:
+            try:
+                int(value)
+            except ValueError:
+                return value
+        elif type == InputType.NUMBER:
+            return float(value)
+        elif type == InputType.BOOLEAN:
+            return bool(value)
+    except ValueError:
+        return False
+
+
+def form(config: FormConfig) -> list[Input]:
+    print(config["title"])
+    for index, question in enumerate(config["inputs"]):
+        while True:
+            answer = input(f"{index}. {question['label']}:\n> ")
+            if not check_correct_type(answer, question["type"]):
+                continue
+            question["answer"] = answer
+            break
+    return config["inputs"]
+
+
+def main():
+    result = form(
+        {
+            "title": "Book Manager",
+            "inputs": [
+                {
+                    "label": "Title",
+                    "type": InputType.TEXT,
+                },
+                {
+                    "label": "Author",
+                    "type": InputType.TEXT,
+                },
+                {
+                    "label": "Pages",
+                    "type": InputType.NUMBER,
+                },
+            ],
+        }
+    )
+    print(result)
+
+
+if __name__ == "__main__":
+    main()
